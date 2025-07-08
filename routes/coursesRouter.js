@@ -4,7 +4,6 @@ const { body, param } = require('express-validator');
 
 const coursesController = require('../controllers/coursesController');
 
-// Validation middleware
 const validateCourseBody = [
   body('course')
     .trim()
@@ -12,19 +11,13 @@ const validateCourseBody = [
     .isLength({ min: 2 }).withMessage('Course name must be at least 2 characters')
 ];
 
-// GET all
-router.get('/', coursesController.getAllCourses);
+router.route('/')
+    .post(validateCourseBody, coursesController.createCourse)
+    .get(coursesController.getAllCourses);
 
-// GET by ID
-router.get('/:courseId', coursesController.getCourse);
-
-// POST
-router.post('/', validateCourseBody, coursesController.createCourse);
-
-// PATCH
-router.patch('/:courseId', validateCourseBody, coursesController.updateCourse);
-
-// DELETE
-router.delete('/:courseId', coursesController.deleteCourse);
+router.route('/:courseId')
+    .get(coursesController.getCourse)
+    .patch(validateCourseBody, coursesController.updateCourse)
+    .delete(coursesController.deleteCourse);
 
 module.exports = router;
