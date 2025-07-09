@@ -7,7 +7,6 @@ const port = process.env.PORT || 3000;
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
-
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'views', 'index.html'));
 });
@@ -23,8 +22,6 @@ app.use((err, req, res, next) => {
   console.error(err.stack);
   res.status(500).sendFile(path.join(__dirname, 'views', '500.html'));
 });
-
-
 
 const { connectToMongo } = require('./config/db');
 connectToMongo().then(() => {
