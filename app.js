@@ -24,6 +24,11 @@ app.use((err, req, res, next) => {
   res.status(500).sendFile(path.join(__dirname, 'views', '500.html'));
 });
 
-app.listen(port, () => {
+
+
+const { connectToMongo } = require('./config/db');
+connectToMongo().then(() => {
+  app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);
+  });
 });
