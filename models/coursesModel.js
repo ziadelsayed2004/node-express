@@ -2,41 +2,33 @@ const { getDb } = require("../config/db");
 const { ObjectId } = require("mongodb");
 
 const collectionName = "node";
-let courses = [];
-
-const initCourses = async () => {
-  const db = getDb();
-  courses = await db.collection(collectionName).find().toArray();
-};
-
-const handler = {
-  get(target, prop) {
-    if (prop === "push") {
-      return async function (course) {
-        const db = getDb();
-        const result = await db.collection(collectionName).insertOne(course);
-        course._id = result.insertedId;
-        target.push(course);
-      };
-    }
-
-    if (prop === "filter") return (...args) => target.filter(...args);
-    if (prop === "find") return (...args) => target.find(...args);
-    if (prop === "map") return (...args) => target.map(...args);
-    if (prop === "length") return target.length;
-
-    return target[prop];
-  },
-
-  set(target, prop, value) {
-    target[prop] = value;
-    return true;
-  }
-};
-
-const coursesProxy = new Proxy(courses, handler);
 
 module.exports = {
-  courses: coursesProxy,
-  initCourses
+  getAll: async () => {
+    const db = getDb();
+    return await db.collection(collectionName).find().toArray();
+  },
+
+  getById: async (id) => {
+    const db = getDb();
+    return await db.collection(collectionName).findOne({ id: +id });
+  },
+
+  create: async (course) => {
+    const db = getDb();
+    return await db.collection(collectionName).insertOne(course);
+  },
+
+  update: async (id, updateData) => {
+    const db = getDb();
+    return await db.collection(collectionName).updateOne(
+      { id: +id },
+      { $set: updateData }
+    );
+  },
+
+  delete: async (id) => {
+    const db = getDb();
+    return await db.collection(collectionName).deleteOne({ id: +id });
+  }
 };

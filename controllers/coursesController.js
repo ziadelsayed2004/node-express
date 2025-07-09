@@ -1,50 +1,47 @@
-const { validationResult } = require('express-validator');
-const { courses } = require('../models/coursesModel');
+const { validationResult } = require("express-validator");
+const courseModel = require("../models/coursesModel");
 
-const getAllCourses = (req, res) => {
+const getAllCourses = async (req, res) => {
+  const courses = await courseModel.getAll();
   res.json(courses);
 };
 
-const getCourse = (req, res) => {
-  const courseId = +req.params.courseId;
-  const course = courses.find(c => c.id === courseId);
+const getCourse = async (req, res) => {
+  const course = await courseModel.getById(req.params.courseId);
   if (!course) return res.status(404).json({ msg: "Not Found" });
-  res.status(200).json(course);
+  res.json(course);
 };
 
 const createCourse = async (req, res) => {
   const errors = validationResult(req);
-  if (!errors.isEmpty()) {
+  if (!errors.isEmpty())
     return res.status(400).json({ errors: errors.array() });
-  }
 
-  const newCourse = { id: courses.length + 1, ...req.body };
-  await courses.push(newCourse); // 🟢 استخدم proxy push
-  res.status(201).json(courses);
+  const allCourses = await courseModel.getAll();
+  const newCourse = { id: allCourses.length + 1, ...req.body };
+  await courseModel.create(newCourse);
+  res.status(201).json(newCourse);
 };
 
-const updateCourse = (req, res) => {
-  const courseId = +req.params.courseId;
+const updateCourse = async (req, res) => {
   const errors = validationResult(req);
-  if (!errors.isEmpty()) {
+  if (!errors.isEmpty())
     return res.status(400).json({ errors: errors.array() });
-  }
 
-  let course = courses.find(c => c.id === courseId);
+  const course = await courseModel.getById(req.params.courseId);
   if (!course) return res.status(404).json({ msg: "Not Found" });
 
-  course = { ...course, ...req.body };
-  courses[courses.findIndex(c => c.id === courseId)] = course;
-  res.status(200).json(course);
+  await courseModel.update(req.params.courseId, req.body);
+  const updatedCourse = await courseModel.getById(req.params.courseId);
+  res.json(updatedCourse);
 };
 
-const deleteCourse = (req, res) => {
-  const courseId = +req.params.courseId;
-  const index = courses.findIndex(c => c.id === courseId);
-  if (index === -1) return res.status(404).json({ msg: "Not Found" });
+const deleteCourse = async (req, res) => {
+  const course = await courseModel.getById(req.params.courseId);
+  if (!course) return res.status(404).json({ msg: "Not Found" });
 
-  courses.splice(index, 1);
-  res.status(200).json(courses);
+  await courseModel.delete(req.params.courseId);
+  res.json({ msg: "Deleted", deleted: course });
 };
 
 module.exports = {
