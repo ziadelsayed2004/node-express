@@ -7,9 +7,12 @@ const getAllCourses = async (req, res) => {
 };
 
 const getCourse = async (req, res) => {
-  const course = await courseModel.getById(req.params.courseId);
-  if (!course) return res.status(404).json({ msg: "Not Found" });
-  res.json(course);
+  try{const course = await courseModel.getById(req.params.courseId);
+    if (!course) return res.status(404).json({ msg: "Not Found" });
+    return res.json(course);
+  } catch(err) {
+    return res.status(400).json(({ msg: "ID Not Found" }));
+  }
 };
 
 const createCourse = async (req, res) => {
