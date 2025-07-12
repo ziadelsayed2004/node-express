@@ -17,10 +17,13 @@ const createCourse = async (req, res) => {
   if (!errors.isEmpty())
     return res.status(400).json({ errors: errors.array() });
 
-  const allCourses = await courseModel.getAll();
-  const newCourse = { id: allCourses.length + 1, ...req.body };
-  await courseModel.create(newCourse);
-  res.status(201).json(newCourse);
+  try {
+    const newCourse = await courseModel.create(req.body);
+    res.status(201).json(newCourse);
+  } catch (err) {
+    console.error("❌ Error creating course:", err);
+    res.status(500).json({ msg: "Internal Server Error" });
+  }
 };
 
 const updateCourse = async (req, res) => {

@@ -1,34 +1,31 @@
-const { getDb } = require("../config/db");
-const { ObjectId } = require("mongodb");
+const { mongoose } = require("../config/db");
 
-const collectionName = "node";
+const courseSchema = new mongoose.Schema({}, { strict: false });
+
+const Course = mongoose.model("Course", courseSchema, "node");
 
 module.exports = {
   getAll: async () => {
-    const db = getDb();
-    return await db.collection(collectionName).find().toArray();
+    return await Course.find();
   },
 
   getById: async (id) => {
-    const db = getDb();
-    return await db.collection(collectionName).findOne({ id: +id });
+    if (!mongoose.Types.ObjectId.isValid(id)) return null;
+    return await Course.findById(id);
   },
 
   create: async (course) => {
-    const db = getDb();
-    return await db.collection(collectionName).insertOne(course);
+    const newCourse = new Course(course);
+    return await newCourse.save();
   },
 
   update: async (id, updateData) => {
-    const db = getDb();
-    return await db.collection(collectionName).updateOne(
-      { id: +id },
-      { $set: updateData }
-    );
+    if (!mongoose.Types.ObjectId.isValid(id)) return null;
+    return await Course.findByIdAndUpdate(id, updateData, { new: true });
   },
 
   delete: async (id) => {
-    const db = getDb();
-    return await db.collection(collectionName).deleteOne({ id: +id });
-  }
+    if (!mongoose.Types.ObjectId.isValid(id)) return null;
+    return await Course.findByIdAndDelete(id);
+  },
 };
