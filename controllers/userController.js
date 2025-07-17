@@ -3,7 +3,6 @@ const userModel = require('../models/userModel');
 const httpMsg = require('../utils/httpMsg');
 const appError = require('../utils/appError');
 const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
 const generateJWT = require("../utils/generateJWT");
 
 const getAllUsers = asyncWrapper(async (req,res) => {
