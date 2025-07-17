@@ -1,66 +1,56 @@
-const { validationResult } = require("express-validator");
+const { validationResult} = require("express-validator");
 const courseModel = require("../models/coursesModel");
 const httpMsg = require("../utils/httpMsg");
+const asyncWrapper = require('../middlewares/asyncWrapper');
+const appError = require('../utils/appError');
 
-const getAllCourses = async (req, res) => {
-  try {
-    const courses = await courseModel.getAll();
-    return res.json({status:httpMsg.success, courses});
-  } catch(err) {
-    return res.json({status:httpMsg.fail, errors: err.array()});
-  }
-};
+const getAllCourses = asyncWrapper(async (req,res) => {
+    const query = req.query;
+    const limit = query.limit || 10;
+    const page = query.page || 1;
+    const skip = (page - 1) * limit;
+    const courses = await courseModel.find({}, {"__v": false}).limit(limit).skip(skip);
+    res.json({ status: httpMsg.SUCCESS, data: {courses}});
+})
 
-const getCourse = async (req, res) => {
-  try{const course = await courseModel.getById(req.params.courseId);
-    if (!course) return res.status(404).json({status:httpMsg.notFound, msg:"Not Found"});
-    return res.json({status:httpMsg.success, course});
-  } catch(err) {
-    return res.status(400).json(({status:httpMsg.notFound, msg:"ID Not Found", errors: err.array()}));
-  }
-};
+const getCourse = asyncWrapper(
+    async (req, res, next) => {
+        const course = await courseModel.findById(req.params.courseId);
+        if(!course) {
+            const error = appError.create('course not found', 404, httpMsg.FAIL)
+            return next(error);
+        }
+        return res.json({ status: httpMsg.SUCCESS, data: {course}});
+    }
+)
 
-const createCourse = async (req, res) => {
-  const errors = validationResult(req);
-  if (!errors.isEmpty())
-    return res.status(400).json({status:httpMsg.fail ,errors: errors.array()});
-  try {
-    const newCourse = await courseModel.create(req.body);
-    res.status(201).json({status:httpMsg.success, newCourse});
-  } catch (err) {
-    res.status(500).json({status:httpMsg.fail, msg: "Internal Server Error", errors:err.array()});
-  }
-};
+const addCourse = asyncWrapper(async (req, res, next) => {
+    const errors = validationResult(req);
+    if(!errors.isEmpty()) {
+        const error = appError.create(errors.array(), 400, httpMsg.FAIL)
+        return next(error);
+    }
 
-const updateCourse = async (req, res) => {
-  const errors = validationResult(req);
-  const course = await courseModel.getById(req.params.courseId);
-  if (!errors.isEmpty()) return res.status(400).json({status:httpMsg.fail, errors: errors.array()});
-  if (!course) return res.status(404).json({status:httpMsg.notFound, msg: "Not Found" });
-  try{
-    await courseModel.update(req.params.courseId, req.body);
-    const updatedCourse = await courseModel.getById(req.params.courseId);
-    res.json({status:httpMsg.success, updatedCourse});
-  } catch(err){
-    res.status(500).json({status:httpMsg.fail, msg: "Internal Server Error", errors:err.array()});
-  }
-};
+    const newCourse = new courseModel(req.body);
+    await newCourse.save();
+    res.status(201).json({status: httpMsg.SUCCESS, data: {course: newCourse}})
+})
 
-const deleteCourse = async (req, res) => {
-  const course = await courseModel.getById(req.params.courseId);
-  if (!course) return res.status(404).json({status:httpMsg.notFound, msg: "Not Found" });
-  try{
-    await courseModel.delete(req.params.courseId);
-    res.json({status:httpMsg.deleted,  msg: "Deleted", deleted: course });
-  } catch(err){
-    res.status(500).json({status:httpMsg.fail, msg: "Internal Server Error", errors:err.array()});
-  }
-};
+const updateCourse = asyncWrapper(async (req, res) => {
+    const courseId = req.params.courseId;    
+    const updatedCourse = await courseModel.updateOne({_id: courseId}, {$set: {...req.body}});
+    return res.status(200).json({status: httpMsg.SUCCESS, data: {course: updatedCourse}})
+})
+
+const deleteCourse = asyncWrapper(async (req, res) => {
+    await Course.deleteOne({_id: req.params.courseId});
+    res.status(200).json({status: httpMsg.SUCCESS, data: null});
+})
 
 module.exports = {
-  getAllCourses,
-  getCourse,
-  createCourse,
-  updateCourse,
-  deleteCourse
-};
+    getAllCourses,
+    getCourse,
+    addCourse,
+    updateCourse,
+    deleteCourse
+}

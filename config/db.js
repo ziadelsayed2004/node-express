@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const url = "mongodb+srv://ziadelsayedzaki:1Qb1ixM5GSksswNn@mongo-db.eyyw3wb.mongodb.net/mongo-db?retryWrites=true&w=majority";
+const url = process.env.MONGO_URL;
 
 async function connectToMongo() {
   try {

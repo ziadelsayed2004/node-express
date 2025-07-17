@@ -1,16 +1,21 @@
 const express = require('express');
 const router = express.Router();
+const courseController = require('../controllers/coursesController');
+const { validationSchema } = require('../middlewares/validationSchema');
+const verifyToken = require('../middlewares/verfiyToken');
+const userRoles = require('../utils/userRoles');
+const allowedTo = require('../middlewares/allowedTo');
 
-const coursesController = require('../controllers/coursesController');
-const { validateCourseBody } = require('../middlewares/validationSchema');
 
 router.route('/')
-  .post(validateCourseBody, coursesController.createCourse)
-  .get(coursesController.getAllCourses);
+            .get(courseController.getAllCourses)
+            .post(verifyToken, allowedTo(userRoles.MANGER), validationSchema(), courseController.addCourse);
+
 
 router.route('/:courseId')
-  .get(coursesController.getCourse)
-  .patch(validateCourseBody, coursesController.updateCourse)
-  .delete(coursesController.deleteCourse);
+            .get(courseController.getCourse)
+            .patch(courseController.updateCourse)
+            .delete(verifyToken, allowedTo(userRoles.ADMIN, userRoles.MANGER), courseController.deleteCourse);
+
 
 module.exports = router;

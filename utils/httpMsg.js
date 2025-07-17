@@ -1,6 +1,9 @@
+const SUCCESS = "success";
+const FAIL = "fail";
+const ERROR = "error";
+
 module.exports = {
-    const : success = "Succeeded",
-    const : deleted = "Deleted",
-    const : fail = "Failed",
-    const : notFound = "Not found"
+    SUCCESS,
+    FAIL,
+    ERROR
 }
