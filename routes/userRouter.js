@@ -1,9 +1,15 @@
 const express = require('express');
 const router = express.Router();
-const multer  = require('multer');
 const userController = require('../controllers/userController')
 const verifyToken = require('../middlewares/verfiyToken');
 const appError = require('../utils/appError');
+const multer  = require('multer');
+const fs = require("fs");
+const path = require("path");
+const uploadDir = path.join(__dirname, "../uploads");
+if (!fs.existsSync(uploadDir)) {
+  fs.mkdirSync(uploadDir);
+}
 
 const diskStorage = multer.diskStorage({
     destination: function (req, file, cb) {

@@ -15,9 +15,9 @@ const getAllCourses = asyncWrapper(async (req,res) => {
 
 const getCourse = asyncWrapper(
     async (req, res, next) => {
-        const course = await courseModel.findById(req.params.courseId);
+        const course = await courseModel.findById(req.params.courseId, {"__v" : false});
         if(!course) {
-            const error = appError.create('course not found', 404, httpMsg.FAIL)
+            const error = appError.create('course not foundc', 404, httpMsg.FAIL)
             return next(error);
         }
         return res.json({ status: httpMsg.SUCCESS, data: {course}});

@@ -11,11 +11,9 @@ router.route('/')
             .get(courseController.getAllCourses)
             .post(verifyToken, allowedTo(userRoles.MANGER), validationSchema(), courseController.addCourse);
 
-
 router.route('/:courseId')
             .get(courseController.getCourse)
-            .patch(courseController.updateCourse)
+            .patch(verifyToken, allowedTo(userRoles.ADMIN, userRoles.MANGER), courseController.updateCourse)
             .delete(verifyToken, allowedTo(userRoles.ADMIN, userRoles.MANGER), courseController.deleteCourse);
-
 
 module.exports = router;
