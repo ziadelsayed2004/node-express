@@ -4,6 +4,11 @@
     { "src": "app.js", "use": "@vercel/node" }
   ],
   "routes": [
+    { "handle": "filesystem" },
     { "src": "/(.*)", "dest": "app.js" }
+  ],
+  "includeFiles": [
+    "views/**",
+    "uploads/**"
   ]
 }
