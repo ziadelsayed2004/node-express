@@ -2,12 +2,53 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Node & Express</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Node & Express</title>
+  <link rel="stylesheet" href="/views/styles/style.css" />
 </head>
 
 <body>
-</body>
 
+  <h1>Welcome to My API</h1>
+  <div class="intro">
+    <p><strong>Ziad Elsayed</strong> – Backend Developer using Node.js and Express.  
+    This is a demo API project that includes user authentication, course management, and file uploads.</p>
+  </div>
+
+  <div class="section">
+    <h2>/api/users</h2>
+    <ul>
+      <li><strong>GET /api/users</strong> – Requires token – Get all users</li>
+      <li><strong>POST /api/users/register</strong> – Public – Register a user with image upload (avatar)</li>
+      <li><strong>POST /api/users/login</strong> – Public – Login and receive a JWT token</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h2>/api/courses</h2>
+    <ul>
+      <li><strong>GET /api/courses</strong> – Public – Fetch all courses</li>
+      <li><strong>POST /api/courses</strong> – Requires token (Manager role) – Add a new course</li>
+      <li><strong>GET /api/courses/:courseId</strong> – Public – Get specific course by ID</li>
+      <li><strong>PATCH /api/courses/:courseId</strong> – Requires token (Admin or Manager) – Update course</li>
+      <li><strong>DELETE /api/courses/:courseId</strong> – Requires token (Admin or Manager) – Delete course</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h2>Static & Uploads</h2>
+    <ul>
+      <li><strong>GET /</strong> – Main documentation page</li>
+      <li><strong>GET /home</strong> – Redirects to `/`</li>
+      <li><strong>404 Page</strong> – Displayed when route is not found</li>
+      <li><strong>/uploads/filename</strong> – Access uploaded images directly via this path</li>
+    </ul>
+  </div>
+
+  <footer>
+    &copy; 2025 Ziad Elsayed – All rights reserved.
+  </footer>
+
+</body>
 </html>
