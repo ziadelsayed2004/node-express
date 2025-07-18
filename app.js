@@ -5,6 +5,7 @@ const app = express();
 const coursesRouter = require('./routes/coursesRouter');
 const userRouter = require('./routes/userRouter');
 const cors = require('cors');
+const { connectToMongo } = require('./config/db');
 
 const port = process.env.PORT || 3000;
 
@@ -32,7 +33,6 @@ app.use((err, req, res, next) => {
   res.status(500).sendFile(path.join(__dirname, 'views', '500.html'));
 });
 
-const { connectToMongo } = require('./config/db');
 connectToMongo();
 module.exports = app;
 
