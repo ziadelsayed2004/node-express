@@ -33,11 +33,15 @@ app.use((err, req, res, next) => {
   res.status(500).sendFile(path.join(__dirname, 'views', '500.html'));
 });
 
-connectToMongo();
-module.exports = app;
 
-connectToMongo().then(() => {
-  app.listen(port, () => {
-  console.log(`Server running at http://localhost:${port}`);
+if (process.env.NODE_ENV !== 'production') {
+  connectToMongo().then(() => {
+    app.listen(port, () => {
+      console.log(`Server running at http://localhost:${port}`);
+    });
   });
-});
+} else {
+  connectToMongo();
+}
+
+  module.exports = app;
