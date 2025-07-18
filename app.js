@@ -33,11 +33,11 @@ app.use((err, req, res, next) => {
 });
 
 const { connectToMongo } = require('./config/db');
+connectToMongo();
+module.exports = app;
+
 connectToMongo().then(() => {
   app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);
   });
 });
-
-connectToMongo();
-module.exports = app;
