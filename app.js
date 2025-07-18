@@ -15,7 +15,10 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'views', 'index.html'));
+  res.send("Hello from Express on Vercel!");
+
 });
+
 app.get('/home', (req, res) => {
   res.redirect('/');
 });
