@@ -44,4 +44,4 @@ if (process.env.NODE_ENV !== 'production') {
   connectToMongo();
 }
 
-  module.exports = app;
+module.exports = app;
