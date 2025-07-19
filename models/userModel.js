@@ -29,6 +29,12 @@ const userSchema = new mongoose.Schema({
         enum: [userRoles.USER, userRoles.ADMIN, userRoles.MANGER],
         default: userRoles.USER
     },
+
+    courses: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Course'
+    }],
+
     avatar: {
         type: String,
         default: 'uploads/profile.png'

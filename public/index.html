@@ -25,7 +25,14 @@
     <h2>/api/users</h2>
     <ul>
       <li><strong>GET /api/users</strong> – Requires token – Get all users</li>
-      <li><strong>POST /api/users/register</strong> – Public – Register a user with image upload (avatar)</li>
+
+      <li>
+        <strong>POST /api/users/register</strong> – 
+        <em>Public if role is USER</em>, 
+        <em>Requires token if role is ADMIN or MANGER</em> – 
+        Register a user with avatar image upload
+      </li>
+
       <li><strong>POST /api/users/login</strong> – Public – Login and receive a JWT token</li>
     </ul>
   </div>
@@ -34,10 +41,56 @@
     <h2>/api/courses</h2>
     <ul>
       <li><strong>GET /api/courses</strong> – Public – Fetch all courses</li>
-      <li><strong>POST /api/courses</strong> – Requires token (Manager role) – Add a new course</li>
-      <li><strong>GET /api/courses/:courseId</strong> – Public – Get specific course by ID</li>
-      <li><strong>PATCH /api/courses/:courseId</strong> – Requires token (Admin or Manager) – Update course</li>
-      <li><strong>DELETE /api/courses/:courseId</strong> – Requires token (Admin or Manager) – Delete course</li>
+
+      <li>
+        <strong>POST /api/courses</strong> – 
+        Requires token (<em>ADMIN or MANGER</em>) – 
+        Add a new course
+      </li>
+
+      <li><strong>GET /api/courses/:courseId</strong> – Public – Get course by ID</li>
+
+      <li>
+        <strong>PATCH /api/courses/:courseId</strong> – 
+        Requires token (<em>ADMIN or MANGER</em>) – 
+        Update a course
+      </li>
+
+      <li>
+        <strong>DELETE /api/courses/:courseId</strong> – 
+        Requires token (<em>ADMIN or MANGER</em>) – 
+        Delete a course
+      </li>
+
+      <li>
+        <strong>POST /api/courses/:courseId/enroll</strong> – 
+        Requires token (<em>USER</em>) – 
+        Enroll in a course
+      </li>
+
+      <li>
+        <strong>DELETE /api/courses/:courseId/unenroll</strong> – 
+        Requires token (<em>USER</em>) – 
+        Unenroll from a course
+      </li>
+
+      <li>
+        <strong>GET /api/courses/my-courses</strong> – 
+        Requires token (<em>USER</em>) – 
+        Get your enrolled courses
+      </li>
+
+      <li>
+        <strong>GET /api/courses/my-teaching-courses</strong> – 
+        Requires token (<em>ADMIN</em>) – 
+        Get courses you're teaching
+      </li>
+
+      <li>
+        <strong>GET /api/courses/users/:userId/courses</strong> – 
+        Requires token (<em>MANGER</em>) – 
+        Manager can view a user's courses
+      </li>
     </ul>
   </div>
 

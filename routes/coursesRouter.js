@@ -6,14 +6,20 @@ const verifyToken = require('../middlewares/verfiyToken');
 const userRoles = require('../utils/userRoles');
 const allowedTo = require('../middlewares/allowedTo');
 
+router.post('/:courseId/enroll', verifyToken, allowedTo(userRoles.USER), courseController.enrollInCourse);
+router.delete('/:courseId/unenroll', verifyToken, allowedTo(userRoles.USER), courseController.unenrollFromCourse);
+
+router.get('/my-courses', verifyToken, allowedTo(userRoles.USER), courseController.getUserCourses);
+router.get('/my-teaching-courses', verifyToken, allowedTo(userRoles.ADMIN), courseController.getTeacherCourses);
+router.get('/users/:userId/courses', verifyToken, allowedTo(userRoles.MANGER), courseController.getUserCoursesByManager);
 
 router.route('/')
-            .get(courseController.getAllCourses)
-            .post(verifyToken, allowedTo(userRoles.MANGER), validationSchema(), courseController.addCourse);
+  .get(courseController.getAllCourses)
+  .post(verifyToken, allowedTo(userRoles.ADMIN, userRoles.MANGER), validationSchema(), courseController.addCourse);
 
 router.route('/:courseId')
-            .get(courseController.getCourse)
-            .patch(verifyToken, allowedTo(userRoles.ADMIN, userRoles.MANGER), courseController.updateCourse)
-            .delete(verifyToken, allowedTo(userRoles.ADMIN, userRoles.MANGER), courseController.deleteCourse);
+  .get(courseController.getCourse)
+  .patch(verifyToken, allowedTo(userRoles.ADMIN, userRoles.MANGER), courseController.updateCourse)
+  .delete(verifyToken, allowedTo(userRoles.ADMIN, userRoles.MANGER), courseController.deleteCourse);
 
 module.exports = router;

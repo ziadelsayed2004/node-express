@@ -8,7 +8,21 @@ const courseSchema = new mongoose.Schema({
     price: {
         type: Number,
         required: true
-    }
+    },    
+    createdBy: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+        required: true
+    },
+    teacher: { // (role = ADMIN)
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+        required: true
+    },
+    students: [{ // (role = USER)
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User'
+    }]
 })
 
 module.exports = mongoose.model('Course', courseSchema);

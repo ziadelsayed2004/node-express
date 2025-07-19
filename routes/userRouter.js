@@ -37,13 +37,22 @@ const upload = multer({
     fileFilter
 })
 
-router.route('/')
-            .get(verifyToken, userController.getAllUsers)
+router.route('/').get(verifyToken, userController.getAllUsers);
+router.route('/login').post(userController.login);
 
 router.route('/register')
-            .post(upload.single('avatar'), userController.register)
+  .post(
+    (req, res, next) => {
+      const role = req.body.role;
 
-router.route('/login')
-            .post(userController.login)
+      if (role === 'ADMIN' || role === 'MANGER') {
+        return verifyToken(req, res, next);
+      }
+
+      next();
+    },
+    upload.single('avatar'),
+    userController.register
+  );
 
 module.exports = router;
