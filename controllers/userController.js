@@ -32,7 +32,7 @@ const register = asyncWrapper(async (req, res, next) => {
         avatar: req.file.filename
     })
 
-    const token = await generateJWT({email: newUser.email, id: newUser._id, role: newUser.role});
+    const token = await generateJWT({email: newUser.email, _id: newUser._id, role: newUser.role});
     newUser.token = token;
     await newUser.save();
     res.status(201).json({status: httpMsg.SUCCESS, data: {user: newUser}})
@@ -53,7 +53,7 @@ const login = asyncWrapper(async (req, res, next) => {
 
     const matchedPassword = await bcrypt.compare(password, user.password);
     if(user && matchedPassword) {
-       const token = await generateJWT({email: user.email, id: user._id, role: user.role});
+       const token = await generateJWT({email: user.email, _id: user._id, role: user.role});
 
         return res.json({ status: httpMsg.SUCCESS, data: {token}});
     } else {

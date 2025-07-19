@@ -4,6 +4,7 @@ const userModel = require('../models/userModel');
 const httpMsg = require("../utils/httpMsg");
 const asyncWrapper = require('../middlewares/asyncWrapper');
 const appError = require('../utils/appError');
+const userRoles = require('../utils/userRoles');
 
 const getAllCourses = asyncWrapper(async (req,res) => {
     const query = req.query;
@@ -51,6 +52,9 @@ const addCourse = asyncWrapper(async (req, res, next) => {
   }
 
   req.body.createdBy = req.user._id;
+
+  console.log("🔍 req.user:", req.user);
+  console.log("🔍 req.body BEFORE adding createdBy:", req.body);
 
   const newCourse = new courseModel(req.body);
   await newCourse.save();

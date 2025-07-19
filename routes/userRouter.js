@@ -39,9 +39,9 @@ const upload = multer({
 
 router.route('/').get(verifyToken, userController.getAllUsers);
 router.route('/login').post(userController.login);
-
 router.route('/register')
   .post(
+    upload.single('avatar'),
     (req, res, next) => {
       const role = req.body.role;
 
@@ -51,8 +51,8 @@ router.route('/register')
 
       next();
     },
-    upload.single('avatar'),
     userController.register
   );
+
 
 module.exports = router;
