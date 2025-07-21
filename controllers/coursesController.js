@@ -161,6 +161,7 @@ const getUserCourses = asyncWrapper(async (req, res, next) => {
   const user = await userModel.findById(req.user._id).populate('courses', '-__v');
   res.status(200).json({
     status: httpMsg.SUCCESS,
+    role: "Student || USER",
     data: { courses: user.courses }
   });
 });
@@ -169,6 +170,7 @@ const getTeacherCourses = asyncWrapper(async (req, res, next) => {
   const courses = await courseModel.find({ teacher: req.user._id }, '-__v');
   res.status(200).json({
     status: httpMsg.SUCCESS,
+    role: "Teacher || ADMIN",
     data: { courses }
   });
 });
@@ -176,28 +178,20 @@ const getTeacherCourses = asyncWrapper(async (req, res, next) => {
 const getUserCoursesByManager = asyncWrapper(async (req, res, next) => {
   const { userId } = req.params;
 
-  const user = await userModel.findById(userId).populate({
-    path: user.role === userRoles.USER ? 'courses' : '',
-  });
+  const user = await userModel.findById(userId);
 
   if (!user) {
     return next(appError.create('User not found', 404, httpMsg.FAIL));
   }
 
+  req.user = { _id: userId };
+
   if (user.role === userRoles.USER) {
-    await user.populate('courses');
-    return res.status(200).json({
-      status: httpMsg.SUCCESS,
-      data: { courses: user.courses }
-    });
+    return getUserCourses(req, res, next);
   }
 
   if (user.role === userRoles.ADMIN) {
-    const courses = await courseModel.find({ teacher: userId });
-    return res.status(200).json({
-      status: httpMsg.SUCCESS,
-      data: { courses }
-    });
+    return getTeacherCourses(req, res, next);
   }
 
   return res.status(400).json({

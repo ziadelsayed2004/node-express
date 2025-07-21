@@ -11,7 +11,7 @@ router.delete('/unenroll/:courseId', verifyToken, allowedTo(userRoles.USER), cou
 
 router.get('/my-courses', verifyToken, allowedTo(userRoles.USER), courseController.getUserCourses);
 router.get('/my-teaching-courses', verifyToken, allowedTo(userRoles.ADMIN), courseController.getTeacherCourses);
-router.get('/users/:userId/courses', verifyToken, allowedTo(userRoles.MANGER), courseController.getUserCoursesByManager);
+router.get('/users-courses/:userId', verifyToken, allowedTo(userRoles.MANGER), courseController.getUserCoursesByManager);
 
 router.route('/')
   .get(courseController.getAllCourses)
