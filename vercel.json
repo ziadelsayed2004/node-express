@@ -15,13 +15,11 @@
   "routes": [
     {
       "src": "/(img|styles|js|uploads)/(.*)",
-      "dest": "/public/$1/$2",
-      "continue": true
+      "dest": "/public/$1/$2"
     },
     {
       "src": "/favicon.png",
-      "dest": "/public/img/favicon.png",
-      "continue": true
+      "dest": "/public/img/favicon.png"
     },
     {
       "src": "/(.*)",
