@@ -63,13 +63,13 @@
       </li>
 
       <li>
-        <strong>POST /api/courses/:courseId/enroll</strong> – 
+        <strong>POST /api/courses/enroll/:courseId</strong> – 
         Requires token (<em>USER</em>) – 
         Enroll in a course
       </li>
 
       <li>
-        <strong>DELETE /api/courses/:courseId/unenroll</strong> – 
+        <strong>DELETE /api/courses/unenroll/:courseId</strong> – 
         Requires token (<em>USER</em>) – 
         Unenroll from a course
       </li>
@@ -87,7 +87,7 @@
       </li>
 
       <li>
-        <strong>GET /api/courses/users/:userId/courses</strong> – 
+        <strong>GET /api/courses/users-courses/:userId</strong> – 
         Requires token (<em>MANGER</em>) – 
         Manager can view a user's courses
       </li>
