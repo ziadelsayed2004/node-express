@@ -53,9 +53,6 @@ const addCourse = asyncWrapper(async (req, res, next) => {
 
   req.body.createdBy = req.user._id;
 
-  console.log("🔍 req.user:", req.user);
-  console.log("🔍 req.body BEFORE adding createdBy:", req.body);
-
   const newCourse = new courseModel(req.body);
   await newCourse.save();
 
@@ -150,6 +147,9 @@ const unenrollFromCourse = asyncWrapper(async (req, res, next) => {
 
   user.courses = user.courses.filter(id => id.toString() !== courseId);
   await user.save();
+
+  course.students = course.students.filter(id => id.toString() !== user._id.toString());
+  await course.save();
 
   res.status(200).json({
     status: httpMsg.SUCCESS,

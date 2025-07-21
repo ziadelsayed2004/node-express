@@ -6,8 +6,8 @@ const verifyToken = require('../middlewares/verfiyToken');
 const userRoles = require('../utils/userRoles');
 const allowedTo = require('../middlewares/allowedTo');
 
-router.post('/:courseId/enroll', verifyToken, allowedTo(userRoles.USER), courseController.enrollInCourse);
-router.delete('/:courseId/unenroll', verifyToken, allowedTo(userRoles.USER), courseController.unenrollFromCourse);
+router.post('/enroll/:courseId', verifyToken, allowedTo(userRoles.USER), courseController.enrollInCourse);
+router.delete('/unenroll/:courseId', verifyToken, allowedTo(userRoles.USER), courseController.unenrollFromCourse);
 
 router.get('/my-courses', verifyToken, allowedTo(userRoles.USER), courseController.getUserCourses);
 router.get('/my-teaching-courses', verifyToken, allowedTo(userRoles.ADMIN), courseController.getTeacherCourses);
