@@ -14,9 +14,11 @@
   <h1>Welcome to My API</h1>
   <div class="intro">
     <p>
-      <strong>Ziad Elsayed</strong> – Backend Developer using Node.js and Express.  
-      This is a demo API project that includes user authentication, course management, and file uploads.
-      <br>
+      <strong>Ziad Elsayed</strong> – <strong>CSE</strong> Stu at AL-Azhar Universty.<br> 
+      Backend Developer using Node.js and Express – Full stack developer using responsive frameworks – 
+      Project handeling and startup mangement.  
+      <br>This is a demo API project that includes user authentication, course management, and file uploads.
+      <br><br>
       <strong><a href="https://wa.me/201020572730">CONTACT US TO GET AN OFFER</a></strong>
     </p>
   </div>
@@ -24,71 +26,71 @@
   <div class="section">
     <h2>/api/users</h2>
     <ul>
-      <li><strong>GET /api/users</strong> – Requires token – Get all users</li>
+      <li><strong><span class="method-get">GET</span> /api/users</strong> – Requires token – Get all users</li>
 
       <li>
-        <strong>POST /api/users/register</strong> – 
+        <strong><span class="method-post">POST</span> /api/users/register</strong> – 
         <em>Public if role is USER</em>, 
-        <em>Requires token if role is ADMIN or MANGER</em> – 
+        <em>Requires token if role is ADMIN or MANAGER</em> – 
         Register a user with avatar image upload
       </li>
 
-      <li><strong>POST /api/users/login</strong> – Public – Login and receive a JWT token</li>
+      <li><strong><span class="method-post">POST</span> /api/users/login</strong> – Public – Login and receive a JWT token</li>
     </ul>
   </div>
 
   <div class="section">
     <h2>/api/courses</h2>
     <ul>
-      <li><strong>GET /api/courses</strong> – Public – Fetch all courses</li>
+      <li><strong><span class="method-get">GET</span> /api/courses</strong> – Public – Fetch all courses</li>
 
       <li>
-        <strong>POST /api/courses</strong> – 
-        Requires token (<em>ADMIN or MANGER</em>) – 
+        <strong><span class="method-post">POST</span> /api/courses</strong> – 
+        Requires token (<em>ADMIN or MANAGER</em>) – 
         Add a new course
       </li>
 
-      <li><strong>GET /api/courses/:courseId</strong> – Public – Get course by ID</li>
+      <li><strong><span class="method-get">GET</span> /api/courses/:courseId</strong> – Public – Get course by ID</li>
 
       <li>
-        <strong>PATCH /api/courses/:courseId</strong> – 
-        Requires token (<em>ADMIN or MANGER</em>) – 
+        <strong><span class="method-patch">PATCH</span> /api/courses/:courseId</strong> – 
+        Requires token (<em>ADMIN or MANAGER</em>) – 
         Update a course
       </li>
 
       <li>
-        <strong>DELETE /api/courses/:courseId</strong> – 
-        Requires token (<em>ADMIN or MANGER</em>) – 
+        <strong><span class="method-delete">DELETE</span> /api/courses/:courseId</strong> – 
+        Requires token (<em>ADMIN or MANAGER</em>) – 
         Delete a course
       </li>
 
       <li>
-        <strong>POST /api/courses/:courseId/enroll</strong> – 
+        <strong><span class="method-post">POST</span> /api/courses/enroll/:courseId</strong> – 
         Requires token (<em>USER</em>) – 
         Enroll in a course
       </li>
 
       <li>
-        <strong>DELETE /api/courses/:courseId/unenroll</strong> – 
+        <strong><span class="method-delete">DELETE</span> /api/courses/unenroll/:courseId</strong> – 
         Requires token (<em>USER</em>) – 
         Unenroll from a course
       </li>
 
       <li>
-        <strong>GET /api/courses/my-courses</strong> – 
+        <strong><span class="method-get">GET</span> /api/courses/my-courses</strong> – 
         Requires token (<em>USER</em>) – 
         Get your enrolled courses
       </li>
 
       <li>
-        <strong>GET /api/courses/my-teaching-courses</strong> – 
+        <strong><span class="method-get">GET</span> /api/courses/my-teaching-courses</strong> – 
         Requires token (<em>ADMIN</em>) – 
         Get courses you're teaching
       </li>
 
       <li>
-        <strong>GET /api/courses/users/:userId/courses</strong> – 
-        Requires token (<em>MANGER</em>) – 
+        <strong><span class="method-get">GET</span> /api/courses/users-courses/:userId</strong> – 
+        Requires token (<em>MANAGER</em>) – 
         Manager can view a user's courses
       </li>
     </ul>
@@ -97,10 +99,10 @@
   <div class="section">
     <h2>Static & Uploads</h2>
     <ul>
-      <li><strong>GET /</strong> – Main documentation page</li>
-      <li><strong>GET /home</strong> – Redirects to `/`</li>
-      <li><strong>404 Page</strong> – Displayed when route is not found</li>
-      <li><strong>/uploads/filename</strong> – Access uploaded images directly via this path</li>
+      <li><strong><span class="method-get">GET</span> /</strong> – Main documentation page</li>
+      <li><strong><span class="method-get">GET</span> /home</strong> – Redirects to `/`</li>
+      <li><strong><span class="method-404">404 Page</span></strong> – Displayed when route is not found</li>
+      <li><strong><span class="method-upload">Get Uoloded</span></strong> /uploads/filename – Access uploaded images directly via this path</li>
     </ul>
   </div>
 
